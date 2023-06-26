@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ChangeEvent, useCallback, useState } from "react";
+import styles from "./App.module.sass";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(50);
+  const leftBound = 30;
+  const rightBound = 80;
+
+  const onChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const value = Number(e.currentTarget.value);
+
+      if (value < leftBound) {
+        setCount(leftBound);
+        return;
+      }
+
+      if (value > rightBound) {
+        setCount(rightBound);
+        return;
+      }
+
+      setCount(Number(value));
+    },
+    [setCount]
+  );
+
+  const wrapperStyles = {
+    "--left-bound": String(leftBound),
+    "--right-bound": String(rightBound)
+  } as React.CSSProperties;
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className={styles.wrapper} style={wrapperStyles}>
+        <input
+          type="range"
+          value={count}
+          onChange={onChange}
+          className={styles.slider}
+          min={0}
+          step={10}
+          max={100}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p>{count}</p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
