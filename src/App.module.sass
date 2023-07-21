@@ -1,3 +1,8 @@
+$range-thumb-size: 16px
+
+*, *::after, *::before
+  box-sizing: border-box
+
 .wrapper
   width: 800px
   position: relative
@@ -16,7 +21,8 @@
     right: 5px
     background: lightgrey
     border-radius: 5px
-    outline: 1px solid black
+    // Emulate rounded 1px outline with a shadow
+    box-shadow: 0 0 0 1px black
 
   &::after
     left: calc((100% - 10px) / 100 * var(--left-bound, 0) + 5px)
@@ -32,3 +38,19 @@
   background: transparent
   position: absolute
   z-index: 10
+
+  &::-webkit-slider-thumb
+    appearance: none
+    background: white
+    border: 1px solid black
+    width: $range-thumb-size
+    height: $range-thumb-size
+    border-radius: 12.5px
+
+  &::-moz-range-thumb
+    transform: translateY(-3px)
+    background: white
+    width: $range-thumb-size
+    height: $range-thumb-size
+    border-radius: 20px
+    border: 1px solid black
